@@ -1,10 +1,10 @@
 import React, { useState, useEffect, useContext } from "react";
 import "../styles/PerfilUsuario.css";
 import { API_BASE_URL } from "../config/api";
-import { AuthContext } from "../context/AuthContext";
+import { AuthContext } from "../context/AuthContext"; // ✅ Ruta corregida (contexts vs context)
 
 function PerfilUsuario() {
-  const [usuario, setUsuario] = useState({
+  const [perfil, setPerfil] = useState({
     nombre: "",
     email: "",
     dni: "",
@@ -18,13 +18,15 @@ function PerfilUsuario() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
-  const { logout } = useContext(AuthContext);
-  const token = localStorage.getItem("token");
+  const { usuario, logout } = useContext(AuthContext); // ✅ Obtener usuario del contexto
 
   useEffect(() => {
     const fetchUsuario = async () => {
       try {
-        if (!token) {
+        // ✅ Usar el token del contexto en lugar de localStorage directamente
+        const token = localStorage.getItem("token");
+        
+        if (!token || !usuario) {
           setError("No autorizado");
           setLoading(false);
           return;
@@ -44,10 +46,10 @@ function PerfilUsuario() {
         }
 
         const data = await res.json();
-        // setUsuario con todos los campos disponibles
-        setUsuario({
+        // ✅ Actualizar el estado del perfil
+        setPerfil({
           nombre: data.usuario.nombreCompleto || "",
-          email: data.usuario.email || "",
+          email: data.usuario.email || usuario.email || "", // ✅ Usar email del contexto como fallback
           dni: data.usuario.dni || "",
           telefono: data.usuario.telefono || "",
           direccionCalle: data.usuario.direccionCalle || "",
@@ -63,12 +65,14 @@ function PerfilUsuario() {
       }
     };
 
-    fetchUsuario();
-  }, [token]);
+    if (usuario) {
+      fetchUsuario();
+    }
+  }, [usuario]); // ✅ Dependencia del usuario del contexto
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setUsuario((prev) => ({ ...prev, [name]: value }));
+    setPerfil((prev) => ({ ...prev, [name]: value }));
   };
 
   const handleActualizar = async () => {
@@ -83,13 +87,13 @@ function PerfilUsuario() {
           Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify({
-          nombreCompleto: usuario.nombre,
-          dni: usuario.dni,
-          telefono: usuario.telefono,
-          direccionCalle: usuario.direccionCalle,
-          direccionLocalidad: usuario.direccionLocalidad,
-          direccionProvincia: usuario.direccionProvincia,
-          direccionPais: usuario.direccionPais,
+          nombreCompleto: perfil.nombre,
+          dni: perfil.dni,
+          telefono: perfil.telefono,
+          direccionCalle: perfil.direccionCalle,
+          direccionLocalidad: perfil.direccionLocalidad,
+          direccionProvincia: perfil.direccionProvincia,
+          direccionPais: perfil.direccionPais,
         }),
       });
 
@@ -132,11 +136,16 @@ function PerfilUsuario() {
         return;
       }
       alert("Cuenta eliminada correctamente");
-      logout();
+      logout(); // ✅ Usar logout del contexto
     } catch (err) {
       setError("No se pudo conectar con el servidor");
     }
   };
+
+  // ✅ Mostrar loading mientras se carga
+  if (loading && !perfil.email) {
+    return <div className="perfil-container">Cargando perfil...</div>;
+  }
 
   return (
     <div className="perfil-container">
@@ -148,68 +157,91 @@ function PerfilUsuario() {
         <input
           type="text"
           name="nombre"
-          value={usuario.nombre}
+          value={perfil.nombre}
           onChange={handleChange}
+          disabled={!editable}
         />
 
         <label>DNI:</label>
         <input
-          type="dni"
+          type="text" // ✅ Cambiado de "dni" a "text"
           name="dni"
-          value={usuario.dni ? usuario.dni : ""}
+          value={perfil.dni}
           onChange={handleChange}
+          disabled={!editable}
         />
 
         <label>Email:</label>
-        <input type="email" name="email" value={usuario.email} disabled />
+        <input 
+          type="email" 
+          name="email" 
+          value={perfil.email} 
+          disabled 
+        />
 
         <label>Teléfono:</label>
         <input
-          type="telefono"
+          type="tel" // ✅ Cambiado a "tel" para mejor UX
           name="telefono"
-          value={usuario.telefono ? usuario.telefono : ""}
+          value={perfil.telefono}
           onChange={handleChange}
+          disabled={!editable}
         />
 
         <label>Calle y Número:</label>
         <input
           type="text"
           name="direccionCalle"
-          value={usuario.direccionCalle || ""}
+          value={perfil.direccionCalle}
           onChange={handleChange}
+          disabled={!editable}
         />
 
         <label>Localidad:</label>
         <input
           type="text"
           name="direccionLocalidad"
-          value={usuario.direccionLocalidad || ""}
+          value={perfil.direccionLocalidad}
           onChange={handleChange}
+          disabled={!editable}
         />
 
         <label>Provincia:</label>
         <input
           type="text"
           name="direccionProvincia"
-          value={usuario.direccionProvincia || ""}
+          value={perfil.direccionProvincia}
           onChange={handleChange}
+          disabled={!editable}
         />
 
         <label>País:</label>
         <input
           type="text"
           name="direccionPais"
-          value={usuario.direccionPais || ""}
+          value={perfil.direccionPais}
           onChange={handleChange}
+          disabled={!editable}
         />
 
         <div className="perfil-buttons">
           {editable ? (
-            <button onClick={handleActualizar} disabled={loading}>
-              {loading ? "Actualizando..." : "Guardar cambios"}
-            </button>
+            <>
+              <button onClick={handleActualizar} disabled={loading}>
+                {loading ? "Actualizando..." : "Guardar cambios"}
+              </button>
+              <button 
+                onClick={() => setEditable(false)} 
+                className="cancel-btn"
+                disabled={loading}
+              >
+                Cancelar
+              </button>
+            </>
           ) : (
-            <button onClick={() => setEditable(true)}>Actualizar datos</button>
+            <button onClick={() => setEditable(true)}>
+              Actualizar datos
+            </button>
           )}
           <button onClick={handleEliminarCuenta} className="delete-btn">
             Eliminar cuenta

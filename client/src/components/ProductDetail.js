@@ -1,13 +1,15 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { useParams, useNavigate, Link } from "react-router-dom";
 import '../styles/productDetail.css';
 import { API_BASE_URL } from '../config/api';
-import { useCarrito } from '../context/CarritoContext'; 
+import { useCarrito } from '../context/CarritoContext'; // ✅ Ruta corregida
+import { AuthContext } from '../context/AuthContext'; // ✅ Importar AuthContext
 
-export default function ProductDetail({ esAdmin, showToast }) {
+export default function ProductDetail({ showToast }) {
   const { id } = useParams();
   const navigate = useNavigate();
   const { agregarProducto } = useCarrito(); 
+  const { esAdmin } = useContext(AuthContext); // ✅ Obtener esAdmin del contexto
   
   const [producto, setProducto] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -143,12 +145,11 @@ export default function ProductDetail({ esAdmin, showToast }) {
             {producto.stock !== undefined && <p><strong>Stock disponible:</strong> {producto.stock} unidades</p>}
           </div>
           
-          
           <button className="btn-agregarcarrito" onClick={handleAddToCart}>
             Añadir al carrito
           </button>
 
-          {esAdmin && (
+          {esAdmin && ( // ✅ Usar esAdmin del contexto
             <div className="admin-actions" style={{ marginTop: '20px', display: 'flex', gap: '10px' }}>
               <Link 
                 to={`/admin/editar-producto/${producto._id}`}

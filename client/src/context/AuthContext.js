@@ -1,39 +1,81 @@
 import React, { createContext, useState, useEffect } from "react";
 import { jwtDecode } from "jwt-decode";
 
-// 1. Crear el Contexto
 export const AuthContext = createContext(null);
 
-// 2. Crear el componente Proveedor
 export const AuthProvider = ({ children }) => {
   const [usuario, setUsuario] = useState(null);
+  const [loading, setLoading] = useState(true);
 
-  // La lógica que antes estaba en App.js ahora vive aquí
   useEffect(() => {
-    const tokenLocal = localStorage.getItem("token");
-    if (tokenLocal) {
-      const decodedUser = jwtDecode(tokenLocal);
-      setUsuario(decodedUser);
-    }
+    const initializeAuth = async () => {
+      const tokenLocal = localStorage.getItem("token");
+      
+      if (tokenLocal) {
+        try {
+          const decodedUser = jwtDecode(tokenLocal);
+          
+          // Verificar si el token no ha expirado
+          const currentTime = Date.now() / 1000;
+          if (decodedUser.exp < currentTime) {
+            console.warn("Token expirado");
+            localStorage.removeItem("token");
+            setUsuario(null);
+          } else {
+            console.log("✅ Usuario decodificado del token:", decodedUser);
+            setUsuario(decodedUser);
+          }
+        } catch (error) {
+          console.error("❌ Error decodificando token:", error);
+          localStorage.removeItem("token");
+          setUsuario(null);
+        }
+      }
+      setLoading(false);
+    };
+
+    initializeAuth();
   }, []);
 
   const login = (token) => {
-    localStorage.setItem("token", token);
-    const decodedUser = jwtDecode(token);
-    setUsuario(decodedUser);
+    try {
+      localStorage.setItem("token", token);
+      const decodedUser = jwtDecode(token);
+      console.log("✅ Usuario después de login:", decodedUser);
+      setUsuario(decodedUser);
+      return decodedUser;
+    } catch (error) {
+      console.error("❌ Error en login:", error);
+      throw error;
+    }
   };
 
   const logout = () => {
     localStorage.removeItem("token");
-    localStorage.clear();
     setUsuario(null);
     window.location.href = "/";
   };
 
-  // 3. Pasamos el estado y las funciones a través del 'value' del Provider
+  // ✅ CALCULAR LOS ROLES SIEMPRE FRESCO
   const esAdmin = usuario?.rol === "administrador";
   const esEditor = usuario?.rol === "editor";
-  const value = { usuario, login, logout, esAdmin, esEditor };
+  
+  console.log("🔄 AuthContext - Usuario:", usuario);
+  console.log("🔄 AuthContext - esAdmin:", esAdmin);
+  console.log("🔄 AuthContext - esEditor:", esEditor);
 
-  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
+  const value = { 
+    usuario, 
+    login, 
+    logout, 
+    esAdmin, 
+    esEditor,
+    loading 
+  };
+
+  return (
+    <AuthContext.Provider value={value}>
+      {children}
+    </AuthContext.Provider>
+  );
 };

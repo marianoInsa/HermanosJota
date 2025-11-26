@@ -2,20 +2,20 @@ import React, { useContext } from 'react';
 import { Navigate } from 'react-router-dom';
 import { AuthContext } from '../context/AuthContext';
 
-function ProtectedRoute({ children }) {
-  const { currentUser, loading } = useContext(AuthContext);
+function ProtectedRoute({ children, adminOnly = false }) {
+  const { usuario, esAdmin, esEditor } = useContext(AuthContext);
   
-  // PASO 1: Mientras está cargando, mostrar indicador
-  if (loading) {
-    return <div>Cargando...</div>;
+  // Si no hay usuario, redirigir al home
+  if (!usuario) {
+    return <Navigate to="/" replace />;
+  }
+
+  // Si la ruta es solo para admin/editor y el usuario no es ninguno, redirigir
+  if (adminOnly && !esAdmin && !esEditor) {
+    return <Navigate to="/" replace />;
   }
   
-  // PASO 2: Si no hay usuario, redirigir a login
-  if (!currentUser) {
-    return <Navigate to="/login" replace />;
-  }
-  
-  // PASO 3: Si hay usuario, mostrar el contenido
+  // Si pasa todas las validaciones, mostrar el contenido
   return children;
 }
 
