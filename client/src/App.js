@@ -87,6 +87,9 @@ function App() {
                 </ProtectedRoute>
               }
             />
+            //404
+            <Route path="*" element={<Notfound />} 
+            />
           </Routes>
           
           <Footer />
