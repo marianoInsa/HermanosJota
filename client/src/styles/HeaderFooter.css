@@ -15,12 +15,11 @@
     left: 0;
     width: 100%;
     height: 12vh;
-    padding: 0 1rem;
     display: flex;
     justify-content: space-between;
     align-items: center;
     gap: 1rem;
-    background-color: #fff;
+    background-color: var(--color-fondo);
     box-shadow: 0 4px 8px rgba(0,0,0,0.1);
     z-index: 1000;
 }
@@ -39,7 +38,7 @@
 .header-marca p {
   font-family: 'Playfair Display', sans-serif;
   font-weight: 600;
-  color: #A0522D;
+  color: var(--color-madera);
   font-size: 1.2rem;
   white-space: nowrap;
 }
@@ -55,7 +54,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #333;
+  color: var(--color-texto);
   cursor: pointer;
   text-decoration: none;
 }
@@ -76,8 +75,8 @@
   right: 55px;
   font-size: 0.8rem;
   padding: 0.15rem 0.35rem;
-  background-color: #D4A437;
-  color: white;
+  background-color: var(--color-dorado);
+  color: var(--color-texto-invertido);
   border-radius: 50px;
 }
 
@@ -92,13 +91,13 @@
     right: -250px;
     width: 250px;
     height: 100vh;
-    background-color: #fff;
+    background-color: var(--color-fondo);
     padding: 2rem;
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: 2rem;
-    box-shadow: -2px 0 5px rgba(0,0,0,0.3);
+    box-shadow: var(--sombra-suave);
     transition: right 0.3s ease;
     z-index: 1001;
 }
@@ -125,13 +124,13 @@
 
 .header-nav ul li a {
     text-decoration: none;
-    color: #333;
+    color: var(--color-texto);
     font-size: 1.1rem;
     transition: color 0.3s ease, font-size 0.3s ease;
 }
 
 .header-nav ul li a:hover {
-    color: rgba(212, 164, 55, 0.5);
+    color: var(--color-dorado-hover);
     font-size: 1.25rem;
 }
 
@@ -144,7 +143,7 @@
 
 .btn-admin {
   background: #28a745;
-  color: white;
+  color: var( --color-texto-blanco);
   padding: 8px 16px;
   border-radius: 4px;
   text-decoration: none;
@@ -168,9 +167,9 @@
 /* Menú desplegable */
 .user-dropdown {
   position: absolute;
-  top: 40px; /* ajusta según el tamaño del icono */
+  top: 40px;
   right: 0;
-  background-color: #fff; /* color de fondo */
+  background-color: var(--color-fondo); 
   border: 1px solid #ccc;
   border-radius: 8px;
   box-shadow: 0px 4px 10px rgba(0,0,0,0.15);
@@ -194,7 +193,7 @@
 
 .user-welcome {
   font-size: 0.85rem;
-  color: #87A96B;
+  color: var(--color-verde);
   white-space: nowrap;
 }
 
@@ -218,7 +217,7 @@
 }
 
 .user-dropdown button:hover {
-  background-color: #f0f0f0;
+  background-color: var(--color-fondo-secundario);
 }
 
 .user-dropdown .logout-btn {
@@ -232,8 +231,8 @@
 */
 
 footer {
-    background-color: #f8f3ec;
-    color: #333;
+    background-color: var(--color-fondo-secundario);
+    color: var(--color-texto);
     text-align: center;
     padding: 1rem;
     margin-top: 2rem;
@@ -261,13 +260,13 @@ footer {
 .slogan{
   font-family: "Playfair Display", sans-serif;
   font-weight: 700;
-  color: #c47a6d;
+  color: var(--color-rosa);
   letter-spacing: 1px;
 }
 
 .footer-columna1 > a{
     text-decoration: none;
-    color: #505050;
+    color: var(--color-texto);
     transition: all 0.3s ease;
     position: relative;
     padding-bottom: 3px;
@@ -280,12 +279,12 @@ footer {
   bottom: 0;
   height: 2px;
   width: 100%;
-  background-color: #c47a6d;
+  background-color: var(--color-rosa);
   transform: scaleX(1);
   transform-origin: left; 
   transition: transform 0.3s ease-out;
 }
-.footer-columna1 > a:hover{ color: #1b1b1b; }
+.footer-columna1 > a:hover{ color: var(--color-texto-invertido); }
 .footer-columna1 > a:hover::after{transform: scaleX(0);}
 
 .contactos{
@@ -586,4 +585,32 @@ footer {
   0% { transform: scale(1); }
   50% { transform: scale(1.5); }
   100% { transform: scale(1); }
+}
+
+/* Contenedor del switch */
+.switch-theme {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Botón del switch*/
+.theme-toggle {
+  background: var(--color-fondo-secundario);
+  color: var(--color-texto);
+  border: 2px solid var(--color-dorado);
+  border-radius: 50%;
+  padding: 5px;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 0.5rem;
+}
+
+/* Hover */
+.theme-toggle:hover {
+  background: var(--color-dorado-hover);
+  transform: scale(1.05);
+  box-shadow: var(--sombra-dorada);
 }

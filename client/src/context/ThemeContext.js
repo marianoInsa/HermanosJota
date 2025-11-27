@@ -14,8 +14,7 @@ export function ThemeProvider({ children }) {
   };
 
   useEffect(() => {
-    document.body.classList.remove("light", "dark");
-    document.body.classList.add(theme);
+    document.body.setAttribute("data-theme", theme);
   }, [theme]);
 
   return (

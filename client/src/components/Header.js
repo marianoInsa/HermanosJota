@@ -72,6 +72,15 @@ function Header() {
       </nav>
 
       <div className="header-right">
+        <div className="switch-theme">
+            <button 
+            className="theme-toggle material-symbols-outlined"
+            onClick={toggleTheme}
+            title="Cambiar tema"
+          >
+            {theme === "light" ? "dark_mode" : "light_mode"}
+          </button>
+        </div>
         {/* Icono usuario */}
         <div className="user-container" ref={userMenuRef}>
           
@@ -148,16 +157,6 @@ function Header() {
           <span className={`numerito ${bounce ? "bounce" : ""}`}>
             {cantidadProductos} 
           </span>
-        </div>
-
-        <div className="switch-theme">
-            <button 
-            className="theme-toggle"
-            onClick={toggleTheme}
-            title="Cambiar tema"
-          >
-            {theme === "light" ? "🌙" : "☀️"}
-          </button>
         </div>
 
         {/* Menú hamburguesa para móvil */}

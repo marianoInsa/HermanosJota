@@ -8,16 +8,18 @@
   /* Textos */
   --color-texto: #333333;
   --color-texto-secundario: #555555;
-  --color-texto-invertido: #FFFFFF;
+  --color-texto-blanco: #FFFFFF;
+  --color-texto-invertido:#1b1b1b;
 
   /* Paleta principal */
   --color-dorado: #D4A437;
   --color-madera: #A0522D;
-  --color-verde-oliva: #87A96B;
+  --color-verde: #87A96B;
+  --color-rosa: #C47A6D;
 
-  /* Acentos y detalles */
-  --color-acento: #D4A437;
-  --color-acento-secundario: #A0522D;
+  /* Acentos */
+  --color-dorado-hover: #E1C067;
+  --color-rosa-hover: #AA5D50;
 
   /* Bordes y sombras */
   --color-borde: 1px solid rgba(0, 0, 0, 0.1);
@@ -54,16 +56,18 @@
   /* Textos */
   --color-texto: #EDEDED;
   --color-texto-secundario: #CFCFCF;
-  --color-texto-invertido: #1B1B1B;
+  --color-texto-invertido: #FFFFFF;
+  --color-texto-blanco: #FFFFFF;
 
   /* Paleta principal adaptada */
-  --color-dorado: #E1C067;
-  --color-madera: #C47A6D;
-  --color-verde-oliva: #9FC58A;
+  --color-dorado: #D4A437;
+  --color-madera: #A0522D;
+  --color-verde: #87A96B;
+  --color-rosa: #C47A6D;
 
   /* Acentos */
-  --color-acento: #E1C067;
-  --color-acento-secundario: #C47A6D;
+  --color-dorado-hover: #E1C067;
+  --color-rosa-hover: #AA5D50;
 
   /* Bordes y sombras */
   --color-borde: 1px solid rgba(255, 255, 255, 0.15);
