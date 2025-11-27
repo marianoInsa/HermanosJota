@@ -2,6 +2,8 @@ import React, { useState, useEffect, useRef, useContext } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
 import { useCarrito } from "../context/CarritoContext";
+import { useTheme } from "../context/ThemeContext";
+
 import ModalLogin from "./ModalLogin";
 import ModalRegister from "./ModalRegister";
 import ModalForgotPassword from "./ModalForgotPassword";
@@ -18,9 +20,9 @@ function Header() {
   const [showUserMenu, setShowUserMenu] = useState(false);
   const [showForgot, setShowForgot] = useState(false);
   
-  
   const { usuario, login, logout, esAdmin, esEditor } = useContext(AuthContext);
   const { toggleCarrito, bounce, cantidadProductos } = useCarrito(); 
+  const { theme, toggleTheme } = useTheme();
 
   const userMenuRef = useRef(null);
   const navigate = useNavigate();
@@ -146,6 +148,16 @@ function Header() {
           <span className={`numerito ${bounce ? "bounce" : ""}`}>
             {cantidadProductos} 
           </span>
+        </div>
+
+        <div className="switch-theme">
+            <button 
+            className="theme-toggle"
+            onClick={toggleTheme}
+            title="Cambiar tema"
+          >
+            {theme === "light" ? "🌙" : "☀️"}
+          </button>
         </div>
 
         {/* Menú hamburguesa para móvil */}

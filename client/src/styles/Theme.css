@@ -1,0 +1,96 @@
+/* ------------ MODO CLARO (X DEFECTO) ------------ */
+:root {
+  /* Fondos */
+  --color-fondo: #FFFFFF;
+  --color-fondo-secundario: #F5E6D3; /* beige cálido */
+  --color-fondo-tarjeta: #FFFFFF;
+
+  /* Textos */
+  --color-texto: #333333;
+  --color-texto-secundario: #555555;
+  --color-texto-invertido: #FFFFFF;
+
+  /* Paleta principal */
+  --color-dorado: #D4A437;
+  --color-madera: #A0522D;
+  --color-verde-oliva: #87A96B;
+
+  /* Acentos y detalles */
+  --color-acento: #D4A437;
+  --color-acento-secundario: #A0522D;
+
+  /* Bordes y sombras */
+  --color-borde: 1px solid rgba(0, 0, 0, 0.1);
+  --sombra-suave: 0 4px 10px rgba(0, 0, 0, 0.08);
+  --sombra-dorada: 0 4px 10px rgba(212, 164, 55, 0.4);
+
+  /* Botones */
+  --btn-bg: transparent;
+  --btn-border: 2px solid var(--color-dorado);
+  --btn-hover-bg: rgba(212, 164, 55, 0.8);
+  --btn-hover-text: white;
+
+  /* Header y Footer */
+  --bg-header: linear-gradient(135deg, #ffffff 0%, #f5e6d3 100%);
+  --bg-footer: linear-gradient(135deg, #f5e6d3 0%, #ffffff 100%);
+
+  /* Carrusel */
+  --carrusel-filtro: brightness(80%);
+
+  /* Animaciones */
+  --transicion-base: 0.3s ease-in-out;
+
+  /* Iconos */
+  --filtro-iconos: invert(20%);
+}
+
+/* ------------ MODO OSCURO ------------ */
+[data-theme="dark"] {
+  /* Fondos */
+  --color-fondo: #1B1B1B;
+  --color-fondo-secundario: #242424;
+  --color-fondo-tarjeta: #2D2D2D;
+
+  /* Textos */
+  --color-texto: #EDEDED;
+  --color-texto-secundario: #CFCFCF;
+  --color-texto-invertido: #1B1B1B;
+
+  /* Paleta principal adaptada */
+  --color-dorado: #E1C067;
+  --color-madera: #C47A6D;
+  --color-verde-oliva: #9FC58A;
+
+  /* Acentos */
+  --color-acento: #E1C067;
+  --color-acento-secundario: #C47A6D;
+
+  /* Bordes y sombras */
+  --color-borde: 1px solid rgba(255, 255, 255, 0.15);
+  --sombra-suave: 0 4px 10px rgba(255, 255, 255, 0.05);
+  --sombra-dorada: 0 4px 12px rgba(255, 214, 133, 0.3);
+
+  /* Botones */
+  --btn-bg: #3A3A3A;
+  --btn-border: 2px solid var(--color-dorado);
+  --btn-hover-bg: var(--color-dorado);
+  --btn-hover-text: black;
+
+  /* Header y Footer */
+  --bg-header: linear-gradient(135deg, #2a2a2a 0%, #1b1b1b 100%);
+  --bg-footer: linear-gradient(135deg, #1b1b1b 0%, #2a2a2a 100%);
+
+  /* Carrusel */
+  --carrusel-filtro: brightness(60%);
+
+  /* Iconos */
+  --filtro-iconos: invert(100%);
+}
+
+/* APLICACIÓN GLOBAL*/
+body {
+  background-color: var(--color-fondo);
+  color: var(--color-texto);
+  font-family: "Poppins", sans-serif;
+  transition: background var(--transicion-base), color var(--transicion-base);
+}
