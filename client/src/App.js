@@ -20,6 +20,7 @@ import useToast from "./hooks/useToast";
 import ProtectedRoute from "./components/ProtectedRoute";
 import { CarritoProvider } from "./context/CarritoContext";
 import { AuthProvider } from "./context/AuthContext";
+import NotFound from './components/Notfound';
 
 function App() {
   const { toasts, showToast, removeToast } = useToast();
@@ -87,6 +88,7 @@ function App() {
                 </ProtectedRoute>
               }
             />
+            <Route path="*" element={<NotFound />} />
           </Routes>
           
           <Footer />
