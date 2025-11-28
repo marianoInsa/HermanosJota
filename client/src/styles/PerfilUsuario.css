@@ -11,15 +11,17 @@ html {
 }
 
 .perfil-container {
-  width: 100% !important;
+  width: 100vw;
+  min-height: 100vh;
   background-color: var(--color-fondo);
-  border-bottom: var(--color-borde);
-  color: var(--color-texto);
   display: flex;
   justify-content: center;
+  align-items: center;
+  padding: 20px;
 }
 
 .perfil-tarjeta {
+  width: 100%;
   max-width: 480px;
   padding: 40px 30px;
   background-color: var(--color-fondo-tarjeta);
@@ -162,11 +164,6 @@ html {
 @media (min-width: 1024px) {
   html {
     font-size: 20px;
-  }
-  
-  .perfil-container {
-    max-width: 520px;
-    padding: 50px 40px;
   }
   
   .perfil-buttons {
