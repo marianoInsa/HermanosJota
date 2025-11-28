@@ -1,0 +1,128 @@
+/* ------------ MODO CLARO (X DEFECTO) ------------ */
+:root {
+  /* Fondos */
+  --color-fondo: #FFFFFF;
+  --color-fondo-secundario: #F5E6D3; /* beige cálido */
+  --color-fondo-secundario-suave: #fff0f0;
+  --color-fondo-tarjeta: #FFFFFF;
+  --color-fondo-disabled: #f8f3eb;
+
+  /* Textos */
+  --color-texto: #333333;
+  --color-texto-secundario: #555555;
+  --color-texto-blanco: #FFFFFF;
+  --color-texto-invertido:#1b1b1b;
+
+  /* Paleta principal */
+  --color-dorado: #D4A437;
+  --color-madera: #A0522D;
+  --color-verde: #87A96B;
+  --color-rosa: #C47A6D;
+
+  /* Acentos */
+  --color-dorado-hover: #E1C067;
+  --color-rosa-hover: #AA5D50;
+  --color-marron-acento: #704a2a;
+  --color-verde-acento: #9abd7d;
+
+  /* Bordes y sombras */
+  --color-borde: 1px solid rgba(0, 0, 0, 0.1);
+  --sombra-suave: 0 4px 10px rgba(0, 0, 0, 0.08);
+  --sombra-dorada: 0 4px 10px rgba(212, 164, 55, 0.4);
+
+  /* Botones */
+  --btn-bg: transparent;
+  --btn-border: 2px solid var(--color-dorado);
+  --btn-hover-bg: rgba(212, 164, 55, 0.8);
+  --btn-hover-text: white;
+
+  /* Header y Footer */
+  --bg-header: linear-gradient(135deg, #ffffff 0%, #f5e6d3 100%);
+  --bg-footer: linear-gradient(135deg, #f5e6d3 0%, #ffffff 100%);
+
+  /* Carrusel */
+  --carrusel-filtro: brightness(80%);
+
+  /* Animaciones */
+  --transicion-base: 0.3s ease-in-out;
+
+  /* Iconos */
+  --filtro-iconos: invert(20%);
+  --filtro-icono-ig: invert(100%);
+
+  /* Admin nav btns*/
+  --color-btn-nav: #e9ecef;
+  --color-btn-nav-seleccionado: #007bff;
+  --color-btn-nav-hover: #dee2e6;
+  --color-fondo-tabla-admin: #FFFFFF;
+  --color-fondo-tabla-admin-hover: #ecebeb;
+  --color-h2-admin: #2c3e50;
+  --color-h3-admin: #495057;
+}
+
+/* ------------ MODO OSCURO ------------ */
+[data-theme="dark"] {
+  /* Fondos */
+  --color-fondo: #1B1B1B;
+  --color-fondo-secundario: #242424;
+  --color-fondo-secundario-suave: #414040;
+  --color-fondo-tarjeta: #2D2D2D;
+  --color-fondo-disabled: #181818;
+
+  /* Textos */
+  --color-texto: #EDEDED;
+  --color-texto-secundario: #CFCFCF;
+  --color-texto-invertido: #FFFFFF;
+  --color-texto-blanco: #FFFFFF;
+
+  /* Paleta principal adaptada */
+  --color-dorado: #D4A437;
+  --color-madera: #A0522D;
+  --color-verde: #87A96B;
+  --color-rosa: #C47A6D;
+
+  /* Acentos */
+  --color-dorado-hover: #E1C067;
+  --color-rosa-hover: #AA5D50;
+  --color-marron-acento: #704a2a;
+  --color-verde-acento: #9abd7d;
+
+  /* Bordes y sombras */
+  --color-borde: 1px solid rgba(255, 255, 255, 0.15);
+  --sombra-suave: 0 4px 10px rgba(255, 255, 255, 0.05);
+  --sombra-dorada: 0 4px 12px rgba(255, 214, 133, 0.3);
+
+  /* Botones */
+  --btn-bg: #3A3A3A;
+  --btn-border: 2px solid var(--color-dorado);
+  --btn-hover-bg: var(--color-dorado);
+  --btn-hover-text: black;
+
+  /* Header y Footer */
+  --bg-header: linear-gradient(135deg, #2a2a2a 0%, #1b1b1b 100%);
+  --bg-footer: linear-gradient(135deg, #1b1b1b 0%, #2a2a2a 100%);
+
+  /* Carrusel */
+  --carrusel-filtro: brightness(60%);
+
+  /* Iconos */
+  --filtro-iconos: invert(100%);
+  --filtro-icono-ig: invert(0%);
+
+    /* Admin nav btns*/
+  --color-btn-nav: #636464;
+  --color-btn-nav-seleccionado: #007bff;
+  --color-btn-nav-hover: #545555;
+  --color-fondo-tabla-admin: #242424;
+   --color-fondo-tabla-admin-hover: #414040;
+  --color-h2-admin: #ffffff;
+  --color-h3-admin: #e7e6e6;
+}
+
+/* APLICACIÓN GLOBAL*/
+body {
+  background-color: var(--color-fondo);
+  color: var(--color-texto);
+  font-family: "Poppins", sans-serif;
+  transition: background var(--transicion-base), color var(--transicion-base);
+}
