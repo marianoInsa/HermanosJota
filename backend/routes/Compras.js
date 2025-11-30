@@ -1,18 +1,15 @@
 const express = require("express");
 const router = express.Router();
 const Compra = require("../models/compras");
-const auth = require("../middleware/auth");
+const auth = require("../middleware/verificarToken");
 
-// Crear nueva compra - MEJORADO
 router.post("/", auth, async (req, res) => {
   try {
-    // ✅ SEGURIDAD: Asegurar que el usuarioId viene del token, no del body
     const compraData = {
       ...req.body,
       usuarioId: req.user.id
     };
 
-    // ✅ VALIDACIÓN MEJORADA: Verificar campos requeridos
     if (!compraData.productos || compraData.productos.length === 0) {
       return res.status(400).json({ 
         success: false,
@@ -20,7 +17,6 @@ router.post("/", auth, async (req, res) => {
       });
     }
 
-    // ✅ VALIDACIÓN ADICIONAL: Verificar estructura de productos
     for (let producto of compraData.productos) {
       if (!producto.productoId || !producto.cantidad || !producto.precio) {
         return res.status(400).json({
@@ -32,20 +28,18 @@ router.post("/", auth, async (req, res) => {
 
     const compra = new Compra(compraData);
     await compra.save();
-    
-    // ✅ POPULATE MEJORADO: Campos específicos para optimizar
+
     await compra.populate("productos.productoId", "nombre titulo precio imagen imagenURL");
     
     res.status(201).json({
       success: true,
       mensaje: "Compra creada exitosamente",
       compra: compra,
-      nroCompra: compra.nroCompra // ✅ Incluir número de compra para referencia
+      nroCompra: compra.nroCompra 
     });
   } catch (error) {
     console.error("Error creando compra:", error);
     
-    // ✅ MEJOR MANEJO DE ERRORES
     if (error.name === 'ValidationError') {
       return res.status(400).json({ 
         success: false,
@@ -67,7 +61,7 @@ router.post("/", auth, async (req, res) => {
   }
 });
 
-// Obtener compras del usuario - MEJORADO
+// Obtener compras del usuario 
 router.get("/mis-compras", auth, async (req, res) => {
   try {
     const { page = 1, limit = 10 } = req.query;
@@ -101,12 +95,9 @@ router.get("/mis-compras", auth, async (req, res) => {
   }
 });
 
-// ✅ MEJORADO: Obtener compra específica del usuario con validación de ID
 router.get("/mis-compras/:id", auth, async (req, res) => {
   try {
     const { id } = req.params;
-
-    // ✅ VALIDACIÓN: Verificar que el ID tiene formato válido de MongoDB
     if (!id.match(/^[0-9a-fA-F]{24}$/)) {
       return res.status(400).json({
         success: false,
@@ -149,13 +140,11 @@ router.get("/mis-compras/:id", auth, async (req, res) => {
   }
 });
 
-// ✅ NUEVA RUTA: Actualizar estado de compra (para usuario/admin)
 router.put("/:id/estado", auth, async (req, res) => {
   try {
     const { id } = req.params;
     const { estado } = req.body;
 
-    // ✅ Validar estado permitido
     const estadosPermitidos = ["pendiente", "confirmado", "preparando", "enviado", "entregado", "cancelado"];
     if (estado && !estadosPermitidos.includes(estado)) {
       return res.status(400).json({
@@ -167,7 +156,7 @@ router.put("/:id/estado", auth, async (req, res) => {
     const compra = await Compra.findOneAndUpdate(
       { 
         _id: id,
-        usuarioId: req.user.id // ✅ Solo el usuario dueño puede actualizar
+        usuarioId: req.user.id 
       },
       { estado },
       { new: true, runValidators: true }
@@ -202,7 +191,6 @@ router.put("/:id/estado", auth, async (req, res) => {
   }
 });
 
-// ✅ NUEVA RUTA: Cancelar compra
 router.put("/:id/cancelar", auth, async (req, res) => {
   try {
     const { id } = req.params;
@@ -211,7 +199,7 @@ router.put("/:id/cancelar", auth, async (req, res) => {
       { 
         _id: id,
         usuarioId: req.user.id,
-        estado: { $in: ["pendiente", "confirmado"] } // ✅ Solo se puede cancelar en estos estados
+        estado: { $in: ["pendiente", "confirmado"] } 
       },
       { estado: "cancelado" },
       { new: true }
