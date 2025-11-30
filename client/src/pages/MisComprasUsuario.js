@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from "react";
-import "../styles/PerfilUsuario.css";
+import "../styles/MisComprasUsuario.css";
 import { API_BASE_URL } from "../config/api";
 import { AuthContext } from "../context/AuthContext"; 
 
@@ -7,7 +7,7 @@ function MisComprasUsuario() {
   const { usuario, logout } = useContext(AuthContext); 
 
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(true);
+  const [error, setError] = useState(false);
 
   useEffect(() => {
     const fetchUsuario = async () => {
@@ -51,26 +51,28 @@ function MisComprasUsuario() {
     {
       id: "C-10324",
       fecha: "2025-01-18T14:20:00",
-      producto: {
-        nombre: "Silla Ergonómica X-200",
-        imagen: "https://via.placeholder.com/80",
-      },
+      productos: [
+        { nombre: "Silla Ergonómica X-200", imagen: "https://via.placeholder.com/80" },
+        { nombre: "Escritorio Plegable Pro", imagen: "https://via.placeholder.com/80" },
+        { nombre: "Lámpara LED Vintage", imagen: "https://via.placeholder.com/80" },
+        { nombre: "Alfombra Moderna XL", imagen: "https://via.placeholder.com/80" },
+        { nombre: "Repisa Flotante", imagen: "https://via.placeholder.com/80" }, // extra
+      ],
     },
     {
       id: "C-10317",
       fecha: "2025-01-10T09:12:00",
-      producto: {
-        nombre: "Mesa de Roble Premium",
-        imagen: "https://via.placeholder.com/80",
-      },
+      productos: [
+        { nombre: "Mesa de Roble Premium", imagen: "https://via.placeholder.com/80" },
+        { nombre: "Silla Nordic Blanca", imagen: "https://via.placeholder.com/80" },
+      ],
     },
     {
       id: "C-10301",
       fecha: "2024-12-28T17:40:00",
-      producto: {
-        nombre: "Lámpara LED Vintage",
-        imagen: "https://via.placeholder.com/80",
-      },
+      productos: [
+        { nombre: "Lámpara LED Vintage", imagen: "https://via.placeholder.com/80" },
+      ],
     },
   ];
 
@@ -78,51 +80,59 @@ function MisComprasUsuario() {
   return (
     <div className="mis-compras-container">
       <div className="compras-tarjeta">
-        <h2>Mi Compras</h2>
+        <h2 className="titulo-compras">Mis Compras</h2>
+
         {error && <p className="errorCompras active">* {error}</p>}
         {loading && <p>Cargando compras...</p>}
 
-        {!loading && !error && compras.length === 0 && (
-          <p>No tienes compras registradas.</p>
-        )}
-
         {!loading && !error && compras.length > 0 && (
-          <div className="tabla-compras">
-            <table>
+          <div className="tabla-compras-container">
+            <table className="tabla-compras">
               <thead>
                 <tr>
                   <th>Nro Compra</th>
                   <th>Fecha</th>
-                  <th>Producto</th>
-                  <th>Imagen</th>
+                  <th>Productos</th>
                   <th>Acción</th>
                 </tr>
               </thead>
               <tbody>
-                {compras.map((compra) => (
-                  <tr key={compra.id}>
-                    <td>{compra.id}</td>
-                    <td>{new Date(compra.fecha).toLocaleDateString()}</td>
-                    <td>{compra.producto.nombre}</td>
-                    <td>
-                      <img
-                        src={compra.producto.imagen}
-                        alt={compra.producto.nombre}
-                        className="img-compra"
-                      />
-                    </td>
-                    <td>
-                      <button
-                        className="btn-detalle"
-                        onClick={() =>
-                          window.location.href = `/mis-compras/${compra.id}`
-                        }
-                      >
-                        Ver detalle
-                      </button>
-                    </td>
-                  </tr>
-                ))}
+                {compras.map((compra) => {
+                  const productosMax = compra.productos.slice(0, 4);
+                  const restantes = compra.productos.length - 4;
+
+                  return (
+                    <tr key={compra.id}>
+                      <td>{compra.id}</td>
+                      <td>{new Date(compra.fecha).toLocaleDateString()}</td>
+                      <td>
+                        <div className="grid-productos">
+                          {productosMax.map((p, index) => (
+                            <div key={index} className="producto-mini">
+                              <img src={p.imagen} alt={p.nombre} />
+                              {index === 3 && restantes > 0 && (
+                                <div className="overlay-mas">
+                                  +{restantes}
+                                </div>
+                              )}
+                            </div>
+                          ))}
+                        </div>
+                      </td>
+
+                      <td>
+                        <button
+                          className="btn-detalle"
+                          onClick={() =>
+                            window.location.href = `/mis-compras/${compra.id}`
+                          }
+                        >
+                          Ver detalle
+                        </button>
+                      </td>
+                    </tr>
+                  );
+                })}
               </tbody>
             </table>
           </div>
