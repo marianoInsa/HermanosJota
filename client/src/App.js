@@ -17,6 +17,7 @@ import CarritoLateral from "./components/CarritoLateral";
 import Producto from "./pages/Productos";
 import AdminPage from "./pages/Admin";
 import AdminProductForm from "./components/AdminProductForm";
+import AdminComprasList from "./components/AdminCompras";
 import ToastContainer from "./components/ToastContainer";
 import useToast from "./hooks/useToast";
 import ProtectedRoute from "./components/ProtectedRoute";
@@ -99,6 +100,14 @@ function App() {
               element={
                 <ProtectedRoute adminOnly>
                   <AdminProductForm editMode={true} showToast={showToast} />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/admin/ver-compras/"
+              element={
+                <ProtectedRoute adminOnly>
+                  <AdminComprasList editMode={true} showToast={showToast} />
                 </ProtectedRoute>
               }
             />
