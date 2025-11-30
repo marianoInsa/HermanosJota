@@ -6,6 +6,7 @@ exports.getMisCompras = async (req, res) => {
     const usuarioId = req.user.id; // viene del token
 
     const compras = await Compra.find({ usuarioId })
+      .populate("productoId", "nombre precio imagen")  
       .select("-__v")
       .sort({ fechaCompra: -1 });
 
@@ -25,7 +26,8 @@ exports.getCompraById = async (req, res) => {
     const compra = await Compra.findOne({
       _id: compraId,
       usuarioId,
-    }).select("-__v");
+    }).populate("productoId")
+      .select("-__v");
 
     if (!compra) {
       return res.status(404).json({
