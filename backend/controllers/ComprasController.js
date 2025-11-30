@@ -1,4 +1,3 @@
-// ✅ CORREGIDO: Importación correcta del modelo
 const Compra = require("../models/compras");
 
 // GET /mis-compras (compras del usuario logueado)
@@ -7,7 +6,6 @@ exports.getMisCompras = async (req, res) => {
     const usuarioId = req.user.id;
 
     const compras = await Compra.find({ usuarioId })
-      .populate("productoId", "nombre precio imagen")  
       .select("-__v")
       .populate("productos.productoId", "nombre titulo precio imagen imagenURL")
       .sort({ fechaCompra: -1 });
@@ -59,12 +57,11 @@ exports.getCompraById = async (req, res) => {
   }
 };
 
-// ✅ CORREGIDO: Crear nueva compra con mejor manejo de errores
+// Crear nueva compra
 exports.crearCompra = async (req, res) => {
   try {
     const usuarioId = req.user.id;
     
-    // ✅ Validar que hay productos en el carrito
     if (!req.body.productos || req.body.productos.length === 0) {
       return res.status(400).json({ 
         success: false,
@@ -74,22 +71,37 @@ exports.crearCompra = async (req, res) => {
 
     const compraData = {
       ...req.body,
-      usuarioId // ✅ Asegurar que el usuarioId viene del token
+      usuarioId
     };
 
+    // Validación de productos
+    for (let producto of compraData.productos) {
+      if (!producto.productoId || !producto.cantidad || !producto.precio) {
+        return res.status(400).json({
+          success: false,
+          error: "Estructura de productos inválida"
+        });
+      }
+    }
+
+    console.log("🔄 Creando instancia de Compra...");
     const compra = new Compra(compraData);
+    
+    console.log("📝 Compra antes de guardar - nroCompra:", compra.nroCompra);
+    
     await compra.save();
+    console.log("✅ Compra guardada - nroCompra:", compra.nroCompra);
 
-    // ✅ Populate para devolver datos completos
     await compra.populate("productos.productoId", "nombre titulo precio imagen imagenURL");
-
-    res.status(201).json({ 
+    
+    res.status(201).json({
       success: true,
       mensaje: "Compra creada exitosamente",
-      compra 
+      compra: compra,
+      nroCompra: compra.nroCompra 
     });
   } catch (error) {
-    console.error("Error en crearCompra:", error);
+    console.error("❌ Error creando compra:", error);
     
     if (error.name === 'ValidationError') {
       return res.status(400).json({ 
@@ -101,7 +113,7 @@ exports.crearCompra = async (req, res) => {
     if (error.code === 11000) {
       return res.status(400).json({
         success: false,
-        error: "Error de duplicación en la compra"
+        error: "Error de duplicación en el número de compra"
       });
     }
     
@@ -112,13 +124,12 @@ exports.crearCompra = async (req, res) => {
   }
 };
 
-// ✅ CORREGIDO: Actualizar estado de compra (para admin)
+// Actualizar estado de compra (para admin)
 exports.actualizarEstadoCompra = async (req, res) => {
   try {
     const { id } = req.params;
     const { estado, pago } = req.body;
 
-    // ✅ Validar que se proporcione al menos un campo para actualizar
     if (!estado && !pago) {
       return res.status(400).json({
         success: false,

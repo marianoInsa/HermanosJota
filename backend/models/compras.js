@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 
 const compraSchema = new mongoose.Schema({
   // Información del pedido
-  nroCompra: { type: Number, required: true, unique: true },
+  nroCompra: { type: Number,unique: true },
   nombreCompleto: { type: String, required: true },
   dni: { type: String, required: true },
 
@@ -67,20 +67,31 @@ const compraSchema = new mongoose.Schema({
   nota: { type: String, default: "" }
 });
 
-// ✅ MEJORADO: Generar número de compra único de forma más robusta
-compraSchema.pre("save", async function(next) {
-  if (this.isNew) {
+// cambio pre save por pre validate para asegurar nroCompra antes de validación
+compraSchema.pre("validate", async function(next) {
+  if (this.isNew && !this.nroCompra) {
     try {
-      // CAMBIA ESTA LÍNEA:
-      const ultimaCompra = await mongoose.model("Compras").findOne().sort({ nroCompra: -1 });
-      this.nroCompra = ultimaCompra ? ultimaCompra.nroCompra + 1 : 1;
+      console.log("🔄 Generando nroCompra...");
+      
+      const maxCompra = await mongoose.connection.db.collection("compras")
+        .find()
+        .sort({ nroCompra: -1 })
+        .limit(1)
+        .toArray();
+      
+      if (maxCompra.length > 0 && maxCompra[0].nroCompra) {
+        this.nroCompra = maxCompra[0].nroCompra + 1;
+      } else {
+        this.nroCompra = 1;
+      }
+      
+      console.log("✅ nroCompra generado:", this.nroCompra);
     } catch (error) {
-      console.error("Error generando nroCompra:", error);
+      console.error("❌ Error generando nroCompra:", error);
       this.nroCompra = 1;
     }
   }
   next();
 });
 
-// ✅ CORREGIDO: Usar "Compra" como nombre del modelo (singular)
 module.exports = mongoose.model("Compras", compraSchema, "compras");
