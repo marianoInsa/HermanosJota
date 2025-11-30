@@ -1,10 +1,13 @@
-import React from "react";
+import React , { useState }  from "react";
 import { useParams, useNavigate } from "react-router-dom";
+import ModalCancelarPedido from "../components/ModalCancelarPedido";
 import "../styles/DetalleCompra.css"; 
 
 function DetalleCompra() {
   const { id } = useParams();
   const navigate = useNavigate();
+
+  const [modalAbierto, setModalAbierto] = useState(false);
 
   const compras = [
     {
@@ -19,6 +22,7 @@ function DetalleCompra() {
         { nombre: "Silla Nordic Blanca", imagen: "https://picsum.photos/600", cantidad:1, precioUnitario:4000 },
       ],
       total:24000,
+      estado: "En preparación",
     },
     {
       id: "C-10317",
@@ -28,6 +32,7 @@ function DetalleCompra() {
         { nombre: "Silla Nordic Blanca", imagen: "https://picsum.photos/600", cantidad:2, precioUnitario:4000  },
       ],
       total:12000,
+      estado: "En camino",
     },
     {
       id: "C-10301",
@@ -36,6 +41,7 @@ function DetalleCompra() {
         { nombre: "Lámpara LED Vintage", imagen: "https://picsum.photos/600", cantidad:1, precioUnitario:4000  },
       ],
       total:4000,
+      estado: "Entregado",
     },
   ];
 
@@ -64,11 +70,25 @@ function DetalleCompra() {
             </div>
           ))}
         </div>
-
-        <button className="btn-volver" onClick={() => navigate(-1)}>
-          Volver
-        </button>
+        <div>
+          {compra.estado !== "Entregado" && (
+            <button
+              className="btn-cancelar-pedido"
+              onClick={() => setModalAbierto(true)}>Cancelar Pedido</button>
+          )}
+          <button className="btn-volver" onClick={() => navigate(-1)}>Volver</button>
+        </div> 
       </div>
+
+      <ModalCancelarPedido
+        abierto={modalAbierto}
+        onClose={() => setModalAbierto(false)}
+        onConfirmar={(motivo) => {
+          alert("Pedido cancelado. Motivo: " + motivo);
+          setModalAbierto(false);
+        }}
+      />
+
     </div>
   );
 }

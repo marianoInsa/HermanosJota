@@ -109,9 +109,23 @@ html {
   flex: 1;
 }
 
+.btn-cancelar-pedido {
+  display: inline-block;
+  padding: 12px 20px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  font-size: 15px;
+  font-weight: 600;
+  transition: 0.2s ease;
+  background-color: var(--color-rosa);
+  color: var(--color-texto-blanco);
+}
 
+.btn-cancelar-pedido:hover {
+  background-color: var(--color-rosa-hover);
+}
 
-/* Media Queries para diseño responsive */
 @media (min-width: 768px) {
   .detalle-container {
     padding: 40px 20px;

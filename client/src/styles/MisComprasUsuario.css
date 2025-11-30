@@ -116,7 +116,32 @@ html {
   border-radius: 8px;
 }
 
+.td-acciones{
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  justify-content: center;
+  text-align: center;
+}
+
 .btn-detalle {
+  display: inline-block;
+  padding: 12px 20px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  font-size: 15px;
+  font-weight: 600;
+  transition: 0.2s ease;
+  background-color: var(--color-dorado);
+  color: var(--color-texto-blanco);
+}
+
+.btn-detalle:hover {
+  background-color: var(--color-dorado-hover);
+}
+
+.btn-cancelar-pedido {
   display: inline-block;
   padding: 12px 20px;
   border-radius: 8px;
@@ -129,10 +154,9 @@ html {
   color: var(--color-texto-blanco);
 }
 
-.btn-detalle:hover {
+.btn-cancelar-pedido:hover {
   background-color: var(--color-rosa-hover);
 }
-
 .input,
 .select {
   width: 100%;
