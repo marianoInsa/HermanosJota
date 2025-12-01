@@ -150,14 +150,14 @@ function DetalleCompra() {
         </div>
 
         <div className="botones-accion">
-          {compra.estado !== "Entregado" && (
-            <button
-              className="btn-cancelar-pedido"
-              onClick={() => setModalAbierto(true)}
-            >
-              Cancelar Pedido
-            </button>
-          )}
+          {(compra.estado === "pendiente" || compra.estado === "confirmado") && (
+                          <button
+                            className="btn-cancelar-pedido"
+                            onClick={() => handleCancelarPedido(compra)}
+                          >
+                            Cancelar
+                          </button>
+                        )}
           <button className="btn-volver" onClick={() => navigate(-1)}>
             Volver
           </button>
