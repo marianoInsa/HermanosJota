@@ -18,7 +18,7 @@ const AdminCompras = () => {
   const fetchCompras = async () => {
     setLoading(true);
     try {
-      const res = await fetch(`${API_BASE_URL}/admin/todas`, {
+      const res = await fetch(`${API_BASE_URL}/compras/admin/todas`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       
