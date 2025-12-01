@@ -123,7 +123,7 @@ function MisComprasUsuario() {
                         >
                           Ver detalle
                         </button>
-                        {compra.estado === "En preparación" && (
+                        {compra.estado !== "Entregado" && (
                           <button
                             className="btn-cancelar-pedido"
                             onClick={() => setModalAbierto(true)}
