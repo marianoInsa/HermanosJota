@@ -1,137 +1,152 @@
-# E-commerce Mueblería Hermanos Jota
+# Sprint 7 y 8 – Mueblería Hermanos Jota
+## Grupo 11 – Code Breakers
+
+- Fabrizio, Jazmin Maia  
+- Gentille, Agostina Abril  
+- Giménez, Agustín José  
+- Insaurralde, Mariano Gastón  
+- Vila, Juan Manuel
 
 ---
 
-## Grupo 11 - Code Breakers
+## Introducción
 
-- **Fabrizio, Jazmin Maia** 
-- **Gentille, Agostina Abril** 
-- **Giménez, Agustín José** 
-- **Insaurralde, Mariano Gastón** 
-- **Vila, Juan Manuel** 
+Este proyecto corresponde al desarrollo del e-commerce “Mueblería Hermanos Jota” durante los Sprints 7 y 8 del programa NEXUS. En esta etapa se integran todas las funcionalidades esenciales para completar el flujo de compra de un usuario, incorporando autenticación, roles, rutas protegidas, persistencia de carrito, CRUD completos y una experiencia de navegación más robusta.  
+El trabajo extiende lo realizado en los sprints previos y consolida la estructura general de la aplicación bajo el stack MERN.
 
 ---
 
-## Descripción del Proyecto
-
-Este proyecto forma parte de los Sprints 5 y 6 del programa NEXUS, en el cual se desarrolló un sistema full-stack MERN (MongoDB, Express, React, Node.js) con persistencia de datos en la nube.
-
-El objetivo principal fue construir un e-commerce funcional para la gestión de una mueblería, implementando:
-
-* CRUD completo de productos
-* Sistema de ruteo con React Router
-* Formularios controlados
-* Conexión real a MongoDB Atlas
-* Despliegue del Backend en Render y Frontend en Vercel
-
-### Funcionalidades del Proyecto
-
-**Backend (API con Node + Express + MongoDB)**
-* Conexión a MongoDB Atlas mediante variables de entorno
-* Modelo Product con Mongoose (nombre, descripción, precio, stock, imagen)
-* CRUD completo de productos
-* Middlewares de logging y manejo de errores
-* Validación básica de datos
-
-**Frontend (React)**
-* Navegación con React Router
-* Consumo de la API real con fetch
-* Manejo de estados de carga y error
-* Formularios controlados para creación y edición
-* Redirección con useNavigate luego de acciones (crear/eliminar)
-* Confirmación de borrado de productos
-* ReCAPTCHA para validaciones de acciones del usuario
-
----
-
-## Tecnologías Utilizadas
+## Tecnologías utilizadas
 
 ### Frontend
-- **React** → Arquitectura de componentes, hooks (`useState`, `useEffect`), props y manejo de estado.
-- **CSS3 (Flexbox + Responsive)** → Estilos responsivos y maquetación moderna.
-- **React Router** → Navegación entre páginas y rutas dinámicas.
-- **Fetch API** → Comunicación con el backend.
+- React  
+- React Router  
+- Context API (Autenticación, Carrito, Tema)  
+- CSS  
+- JWT Decode  
+- Fetch API  
 
 ### Backend
-- **Node.js** → Servidor y entorno de ejecución.
-- **Express.js** → Creación de la API REST, rutas modulares y middlewares.
-- **Middlewares Personalizados** → Logging de peticiones y manejo de errores.
-- **Mongoose y MongoDB Atlas** → Modelado de datos y persistencia en la base de datos en la nube.
-- **JWT y ReCAPTCHA** --> Seguridad básica
-
-### Despliegue
-- **Frontend**: Vercel
-- **Backend**: Render
-- **Base de datos**: MongoDB Atlas
-
-### Control de Versiones
-- **Git & GitHub** → Repositorio único tipo monorepo con carpetas `/client` y `/backend`.
+- Node.js con Express  
+- MongoDB Atlas y Mongoose  
+- JSON Web Token (JWT)  
+- bcryptjs  
+- dotenv  
+- Middleware reCAPTCHA (Google)
 
 ---
 
-## Estructura del Proyecto
-```
-/backend    → API Express (Backend)
-/client     → Aplicación React (Frontend)
-.env        → Variables de entorno (no se sube al repo)
-```
-### Flujo general del sistema
+## Descripción del desarrollo
 
-```mermaid
-flowchart LR
-  A[React Client] ==> B[Express API]
-  B ==> A
-  B ==> C[MongoDB Atlas]
-  C ==> B
-```
+### Autenticación y roles
+
+Se implementó un sistema de registro e inicio de sesión con encriptación de contraseñas utilizando bcrypt.  
+La autenticación se gestiona mediante JWT y permite proteger rutas del backend según el rol del usuario.  
+Los roles definidos son:
+- visitante (predeterminado)
+- editor
+- administrador
+
+El frontend integra AuthContext para mantener el estado de sesión, validar tokens y ofrecer distintas vistas según el rol.
 
 ---
 
-## Enlaces 
+### Gestión de productos, categorías y usuarios
 
-### Render para el Backend
-```
-https://hermanosjota-sprint5y6.onrender.com/api
-```
-### Vercel para el Frontend
-```
-https://hermanosjotasprint5y6.vercel.app/
-```
----
+Dentro del panel administrativo se desarrollaron las siguientes funcionalidades:
 
-## Cómo configurar las variables de entorno (para despliegue local)
+- Alta, baja y modificación de productos.  
+- CRUD de categorías.  
+- Listado de usuarios y modificación de roles.  
+- Visualización de compras registradas en el sistema.
 
-1. **Clonar Respositorio.**
-
-2. **Instalar Dependencias (desde la terminal):**
-
-   1. cd backend
-
-   2. npm install
-
-   3. cd ../client
-
-   4. npm install
-
-4. **Configurar las variables de entorno:**
-
-   - En /backend/.env: 
-      - MONGO_URI=mongodb+srv://hermanosjota:hermanosjota@cluster0.xsxpb32.mongodb.net/catalogo?retryWrites=true&w=majority
-      - RECAPTCHA_SECRET=6Lc9o90rAAAAAA0IXzg7Go0XXsR1_ofbSY7ZdHjC
-      - JWT_SECRET=secreto123
-
-   - En /client/.env: 
-      - REACT_APP_API_URL=https://hermanosjota-sprint5y6.onrender.com/api
-      - REACT_APP_RECAPTCHA_SITE_KEY=6Lc9o90rAAAAADh0SuIy0-tPHxQkKkqA7HRTzUqh
-
-5. **Ejecutar los servidores.**
-
-   - **Backend:**
-      1. cd backend 
-      2. npm run dev
-
-   - **Client:** 
-      1. cd client 
-      2. npm start
+Estas funcionalidades están restringidas a usuarios con rol editor o administrador.
 
 ---
+
+### Carrito de compras y flujo de compra
+
+El carrito se implementó utilizando Context API, permitiendo gestionar cantidades, totales y costo de envío.  
+El contenido del carrito se guarda localmente y en el backend asociado a cada usuario autenticado.  
+
+El flujo de compra incluye:
+- Completado de datos personales y de envío.  
+- Generación de una compra en MongoDB con número de pedido secuencial.  
+- Vaciamiento del carrito una vez finalizada la compra.  
+- Sección “Mis compras” donde el usuario visualiza todas sus operaciones realizadas.
+
+---
+
+### Formulario de contacto y validación
+
+Se creó un formulario de contacto con envío al backend.  
+Para evitar envíos automatizados se implementó verificación mediante Google reCAPTCHA.  
+Los datos se validan desde backend y se descartan solicitudes inválidas.
+
+---
+
+### Interfaz general y navegación
+
+Se mejoró la estructura de la aplicación incorporando:
+- Tema claro/oscuro configurable.  
+- Carrito lateral visible en todas las páginas.  
+- Vista de detalle de producto.  
+- Filtros por categoría en la sección de productos.  
+- Página de error 404 para rutas inexistentes.
+
+---
+
+## Estructura del proyecto
+
+```text
+HermanosJota-Sprint7y8/
+├─ backend/
+│  ├─ controllers/
+│  ├─ middlewares/
+│  ├─ models/
+│  ├─ routes/
+│  └─ server.js
+│
+├─ client/
+│  ├─ public/
+│  └─ src/
+│     ├─ components/
+│     ├─ context/
+│     ├─ pages/
+│     ├─ styles/
+│     ├─ config/
+│     └─ App.js
+│
+└─ README.md
+Ejecución en entorno local
+1. Clonar el repositorio
+  git clone https://github.com/agosGentille/HermanosJota-Sprint7y8.git
+
+2. Instalar dependencias
+Backend:
+  cd backend
+  npm install
+Frontend:
+  cd client
+  npm install
+
+3. Configurar variables de entorno
+Crear los archivos:
+
+backend/.env
+  PORT=4000
+  MONGO_URI=tu_cadena_de_mongodb_atlas
+  JWT_SECRET=tu_clave_jwt_segura
+  RECAPTCHA_SECRET=tu_clave_secreta_recaptcha
+
+client/.env
+  REACT_APP_API_URL=http://localhost:4000/api
+  REACT_APP_RECAPTCHA_SITE_KEY=tu_site_key_recaptcha
+
+4. Iniciar los servidores
+
+Backend:
+npm run dev
+
+Frontend:
+npm start
