@@ -130,9 +130,7 @@ function App() {
             <Route
               path="/admin/detalle-compra/:id"
               element={
-                <ProtectedRoute adminOnly>
-               <AdminDetalleCompra />
-              </ProtectedRoute>
+               <AdminDetalleCompra />              
               }
             />
 
