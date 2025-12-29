@@ -20,8 +20,7 @@ const comprasRoutes = require("./routes/Compras.js");
 app.use(cors({
   origin: [
     "http://localhost:3000",
-    "https://hermanosjotasprint5y6.vercel.app",
-    "https://hermanosjota-lovat.vercel.app",
+    "https://hermanos-jota-flame.vercel.app/",
   ]
 }));
 app.use(express.json());
