@@ -16,6 +16,19 @@ El trabajo extiende lo realizado en los sprints previos y consolida la estructur
 
 ---
 
+## Links 
+
+### Render para el Backend
+
+[https://hermanosjota-lhvx.onrender.com](https://hermanosjota-lhvx.onrender.com)
+
+### Vercel para el Frontend
+
+[https://hermanos-jota-flame.vercel.app](https://hermanos-jota-flame.vercel.app)
+
+
+---
+
 ## Tecnologías utilizadas
 
 ### Frontend
@@ -33,6 +46,18 @@ El trabajo extiende lo realizado en los sprints previos y consolida la estructur
 - bcryptjs  
 - dotenv  
 - Middleware reCAPTCHA (Google)
+
+---
+
+### Flujo
+
+```mermaid
+flowchart LR
+  A[React Client] ==> B[Express API]
+  B ==> A
+  B ==> C[MongoDB Atlas]
+  C ==> B
+```
 
 ---
 
